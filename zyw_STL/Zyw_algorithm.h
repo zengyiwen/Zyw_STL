@@ -9,5 +9,4 @@ namespace Zyw
 		while (last != first) *(--result) = *(--last);
 		return result;
 	}
-
 }
