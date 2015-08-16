@@ -8,6 +8,7 @@ namespace Zyw
 {
 
 	template<class T, class Alloc = alloc>
+
 	class vector {
 	public:
 		typedef T value_type;
