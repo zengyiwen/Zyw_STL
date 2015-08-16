@@ -119,7 +119,7 @@ namespace Zyw
 
 				len = 2 * old_size;
 			}
-			//	const size_type len=old_size*2;
+			
 			iterator new_start = data_allocator::allocate(len);
 			iterator new_finish = new_start;
 			try {
