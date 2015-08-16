@@ -4,14 +4,14 @@
 #include "Zyw_iterator.h"
 
 
-	//----------¹¹Ôì¹¤¾ß
+	//----------æ„é€ å·¥å…·
 	template<class T1, class T2>
-	//ÔÚpËùÖ¸¶¨µÄÄÚ´æÇøÓòÉÏ¹¹Ôìº¯Êı
+	//åœ¨pæ‰€æŒ‡å®šçš„å†…å­˜åŒºåŸŸä¸Šæ„é€ å‡½æ•°
 	inline void construct(T1*p, const T2&value) {
-		new(p) T1(value);//placement new;µ÷ÓÃT1::T1(value);
+		new(p) T1(value);//placement new;è°ƒç”¨T1::T1(value);
 	}
 
-	//--------Îö¹¹¹¤¾ß
+	//--------ææ„å·¥å…·
 	template<class T>
 	inline void destroy(T *pointer)
 	{
@@ -21,16 +21,16 @@
 	inline void destroy(ForwardIterator first, ForwardIterator last) {
 
 		__destroy(first, last, first);
-		//value_typeÕÒ³öÆäÀàËÆÊÇ·ñÊÇIS_POD
+		//value_typeæ‰¾å‡ºå…¶ç±»ä¼¼æ˜¯å¦æ˜¯IS_POD
 	}
 
 	template<class ForwardIterator, class T>
 	inline void __destroy(ForwardIterator first, ForwardIterator last, T*) {
-		//ÅĞ¶ÏÊÇ·ñÓĞÎŞÓÃµÄ¹¹Ôìº¯Êı
+		//åˆ¤æ–­æ˜¯å¦æœ‰æ— ç”¨çš„æ„é€ å‡½æ•°
 		typedef typename __type_traits<T>::has_trivial_destructor trivial_destrutor;
 		__destroy_aux(first, last, trivial_destrutor());
 	}
-	//Èç¹ûÊÇ×Ô¶¨ÒåÀàÀàĞÍº¯Êı
+	//å¦‚æœæ˜¯è‡ªå®šä¹‰ç±»ç±»å‹å‡½æ•°
 	template<class ForwardIterator>
 	inline void __destroy_aux(ForwardIterator first, ForwardIterator last, __false_type) {
 		for (; first != last; ++first)
@@ -39,7 +39,8 @@
 	template<class ForwardIterator>
 	inline void __destroy_aux(ForwardIterator first, ForwardIterator last, __true_type) {}
 
-	//---------------DestroyÌØ»¯°æ±¾
+	//---------------Destroyç‰¹åŒ–ç‰ˆæœ¬
 	inline void destroy(char *, char *) {}
 	inline void destroy(wchar_t*, wchar_t*) {}
+
 
