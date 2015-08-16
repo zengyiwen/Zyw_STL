@@ -12,17 +12,17 @@
 	template <class type>
 	struct __type_traits
 	{
-		// ²»ÒªÒÆ³ıÕâ¸ö³ÉÔ±
-		// ËüÍ¨ÖªÄÜ×Ô¶¯ÌØ»¯__type_traitsµÄ±àÒëÆ÷, ÏÖÔÚÕâ¸ö__type_traits templateÊÇÌØ»¯µÄ
-		// ÕâÊÇÎªÁËÈ·±£ÍòÒ»±àÒëÆ÷Ê¹ÓÃÁË__type_traits¶øÓë´Ë´¦ÎŞÈÎºÎ¹ØÁªµÄÄ£°åÊ±
-		// Ò»ÇĞÒ²ÄÜË³ÀûÔË×÷
+		// ä¸è¦ç§»é™¤è¿™ä¸ªæˆå‘˜
+		// å®ƒé€šçŸ¥èƒ½è‡ªåŠ¨ç‰¹åŒ–__type_traitsçš„ç¼–è¯‘å™¨, ç°åœ¨è¿™ä¸ª__type_traits templateæ˜¯ç‰¹åŒ–çš„
+		// è¿™æ˜¯ä¸ºäº†ç¡®ä¿ä¸‡ä¸€ç¼–è¯‘å™¨ä½¿ç”¨äº†__type_traitsè€Œä¸æ­¤å¤„æ— ä»»ä½•å…³è”çš„æ¨¡æ¿æ—¶
+		// ä¸€åˆ‡ä¹Ÿèƒ½é¡ºåˆ©è¿ä½œ
 		typedef __true_type     this_dummy_member_must_be_first;
 
-		// ÒÔÏÂÌõ¿îÓ¦µ±±»×ñÊØ, ÒòÎª±àÒëÆ÷ÓĞ¿ÉÄÜ×Ô¶¯Éú³ÉÀàĞÍµÄÌØ»¯°æ±¾
-		//   - Äã¿ÉÒÔÖØĞÂ°²ÅÅµÄ³ÉÔ±´ÎĞò
-		//   - Äã¿ÉÒÔÒÆ³ıÄãÏëÒÆ³ıµÄ³ÉÔ±
-		//   - Ò»¶¨²»¿ÉÒÔĞŞ¸ÄÏÂÁĞ³ÉÔ±Ãû³Æ, È´Ã»ÓĞĞŞ¸Ä±àÒëÆ÷ÖĞµÄÏàÓ¦Ãû³Æ
-		//   - ĞÂ¼ÓÈëµÄ³ÉÔ±±»µ±×÷Ò»°ã³ÉÔ±, ³ı·Ç±àÒëÆ÷Ìá¹©ÌØÊâÖ§³Ö
+		// ä»¥ä¸‹æ¡æ¬¾åº”å½“è¢«éµå®ˆ, å› ä¸ºç¼–è¯‘å™¨æœ‰å¯èƒ½è‡ªåŠ¨ç”Ÿæˆç±»å‹çš„ç‰¹åŒ–ç‰ˆæœ¬
+		//   - ä½ å¯ä»¥é‡æ–°å®‰æ’çš„æˆå‘˜æ¬¡åº
+		//   - ä½ å¯ä»¥ç§»é™¤ä½ æƒ³ç§»é™¤çš„æˆå‘˜
+		//   - ä¸€å®šä¸å¯ä»¥ä¿®æ”¹ä¸‹åˆ—æˆå‘˜åç§°, å´æ²¡æœ‰ä¿®æ”¹ç¼–è¯‘å™¨ä¸­çš„ç›¸åº”åç§°
+		//   - æ–°åŠ å…¥çš„æˆå‘˜è¢«å½“ä½œä¸€èˆ¬æˆå‘˜, é™¤éç¼–è¯‘å™¨æä¾›ç‰¹æ®Šæ”¯æŒ
 
 		typedef __false_type    has_trivial_default_constructor;
 		typedef __false_type    has_trivial_copy_constructor;
@@ -32,11 +32,11 @@
 	};
 
 
-	// ÒÔÏÂÕë¶ÔC++ÄÚÖÃµÄ»ù±¾Êı¾İÀàĞÍÌá¹©ÌØ»¯°æ±¾, Ê¹Æä¾ßÓĞtrivial default constructor,
+	// ä»¥ä¸‹é’ˆå¯¹C++å†…ç½®çš„åŸºæœ¬æ•°æ®ç±»å‹æä¾›ç‰¹åŒ–ç‰ˆæœ¬, ä½¿å…¶å…·æœ‰trivial default constructor,
 	// copy constructor, assignment operator, destructor
-	// ²¢±ê¼ÇÆäÎªPODÀàĞÍ
+	// å¹¶æ ‡è®°å…¶ä¸ºPODç±»å‹
 	//
-	// ÌØ»¯ÀàĞÍ:
+	// ç‰¹åŒ–ç±»å‹:
 	//         char, signed char, unsigned char,
 	//         short, unsigned short
 	//         int, unsigned int
@@ -156,7 +156,7 @@
 	};
 
 
-	// Õë¶ÔÖ¸ÕëÌá¹©ÌØ»¯
+	// é’ˆå¯¹æŒ‡é’ˆæä¾›ç‰¹åŒ–
 	template <class T>
 	struct __type_traits<T*>
 	{
@@ -169,7 +169,7 @@
 
 	/* __STL_CLASS_PARTIAL_SPECIALIZATION */
 
-	// Õë¶Ôchar *, signed char *, unsigned char *Ìá¹©ÌØ»¯
+	// é’ˆå¯¹char *, signed char *, unsigned char *æä¾›ç‰¹åŒ–
 	template<>
 	struct __type_traits<char*>
 	{
@@ -196,5 +196,6 @@
 		typedef __true_type    has_trivial_assignment_operator;
 		typedef __true_type    has_trivial_destructor;
 		typedef __true_type    is_POD_type;
+		
 	};
 
