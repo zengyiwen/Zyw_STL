@@ -10,36 +10,36 @@ namespace Zyw
 
 
 
-	template<int inst>  //instÃ»É¶ÓÃ,Ö÷ÒªÊÇÎªÁËÊ¹ÓÃÄ£°å
+	template<int inst>  //instæ²¡å•¥ç”¨,ä¸»è¦æ˜¯ä¸ºäº†ä½¿ç”¨æ¨¡æ¿
 	class __malloc_alloc_template {
 
 	private:
-		//mallocºÍreallocÊ§°ÜµÄÊ±ºòµ÷ÓÃÏÂÃæ2¸öº¯Êı
+		//mallocå’Œreallocå¤±è´¥çš„æ—¶å€™è°ƒç”¨ä¸‹é¢2ä¸ªå‡½æ•°
 		static void *oom_realloc(void *, size_t);
 		static void *oom_malloc(size_t n);
-		//	//º¯ÊıÖ¸ÕëÓÃÀ´´¦ÀíÄÚ´æ²»×ãµÄÇé¿ö
+		//	//å‡½æ•°æŒ‡é’ˆç”¨æ¥å¤„ç†å†…å­˜ä¸è¶³çš„æƒ…å†µ
 		static void(*__malloc_alloc_oom_handler)();
 	public:
 		static void *allocate(size_t n)
 		{
 			void *result = malloc(n);
-			//·ÖÅäÊ§°Ü,µ÷ÓÃoom_malloc()
+			//åˆ†é…å¤±è´¥,è°ƒç”¨oom_malloc()
 			if (0 == result) result = oom_malloc(n);
 			return result;
 		}
 
 		static void deallocate(void *p, size_t)
 		{
-			free(p);//µÚÒ»¼¶ÅäÖÃÆ÷Ö±½ÓÊ¹ÓÃfree
+			free(p);//ç¬¬ä¸€çº§é…ç½®å™¨ç›´æ¥ä½¿ç”¨free
 		}
-		//ÖØĞÂ·ÖÅäÄÚ´æ
+		//é‡æ–°åˆ†é…å†…å­˜
 		static void *reallocate(void*p, size_t, size_t new_sz)
 		{
 			void *result = realloc(p, new_sz);
 			if (0 == result) result = oom_realloc(p, new_sz);
 			return result;
 		}
-		//Ä£Äâset_new_handler,×Ô¼ºÖÆ¶¨ÄÚ´æ³ö´íµ÷ÓÃµÄº¯Êı
+		//æ¨¡æ‹Ÿset_new_handler,è‡ªå·±åˆ¶å®šå†…å­˜å‡ºé”™è°ƒç”¨çš„å‡½æ•°
 		static void(*set_malloc_handler(void(*f)()))()
 		{
 			void(*old)() = __malloc_alloc_oom_handler;
@@ -49,7 +49,7 @@ namespace Zyw
 	};
 	using  malloc_alloc = __malloc_alloc_template < 0 >;
 	template<int inst>
-	//ÓÃÓÚ´¦ÀíÄÚ´æ·ÖÅä³ö´íµÄº¯ÊıÖ¸Õë³õÊ¼»¯Îª¿Õ
+	//ç”¨äºå¤„ç†å†…å­˜åˆ†é…å‡ºé”™çš„å‡½æ•°æŒ‡é’ˆåˆå§‹åŒ–ä¸ºç©º
 	void(*__malloc_alloc_template<inst>::__malloc_alloc_oom_handler)() = nullptr;
 
 
@@ -59,7 +59,7 @@ namespace Zyw
 		void(*my_malloc_handler)();
 		void*result;
 		for (;;) {
-			my_malloc_handler = __malloc_alloc_oom_handler;//Èç¹ûÃ»ÓĞÅäÖÃ,Ö±½ÓÖÕÖ¹
+			my_malloc_handler = __malloc_alloc_oom_handler;//å¦‚æœæ²¡æœ‰é…ç½®,ç›´æ¥ç»ˆæ­¢
 			if (0 == my_malloc_handler) { __THROW_BAD_ALLOC; }
 			*my_malloc_handler();
 			result = realloc(p, n);
@@ -70,13 +70,13 @@ namespace Zyw
 	template<int inst>
 	inline void * __malloc_alloc_template<inst>::oom_malloc(size_t n)
 	{
-		void(*my_malloc_handler)();//¶¨Òåº¯ÊıÖ¸Õë
+		void(*my_malloc_handler)();//å®šä¹‰å‡½æ•°æŒ‡é’ˆ
 		void *result;
 		for (;;) {
 			my_malloc_handler = __malloc_alloc_oom_handler;
 			if (0 == my_malloc_handler) { //__THROW_BAD_ALLOC; }
-				my_malloc_handler();//Ò»°ãÓÃÓÚÊÍ·ÅÖ®Ç°allocate·ÖÅäµÄÄÚ´æ
-				result = malloc(n);//ÔÙ´Î³¢ÊÔÅäÖÃÄÚ´æ
+				my_malloc_handler();//ä¸€èˆ¬ç”¨äºé‡Šæ”¾ä¹‹å‰allocateåˆ†é…çš„å†…å­˜
+				result = malloc(n);//å†æ¬¡å°è¯•é…ç½®å†…å­˜
 				if (result) return(result);
 			}
 			return  nullptr;
@@ -84,45 +84,45 @@ namespace Zyw
 
 	}
 
-	//¶ş¼¶ÅäÖÃÆ÷
-	enum { __ALIGN = 8 };//Ğ¡ĞÍÇø¿éÉÏµ÷±ß½çÊÇ8
-	enum { __MAX_BYTES = 128 };//Ğ¡ĞÍÇø¿éµÄÉÏÏŞÎª128
-	enum { __NFREELISTS = __MAX_BYTES / __ALIGN }; //free_listÁ´±í¸öÊı
+	//äºŒçº§é…ç½®å™¨
+	enum { __ALIGN = 8 };//å°å‹åŒºå—ä¸Šè°ƒè¾¹ç•Œæ˜¯8
+	enum { __MAX_BYTES = 128 };//å°å‹åŒºå—çš„ä¸Šé™ä¸º128
+	enum { __NFREELISTS = __MAX_BYTES / __ALIGN }; //free_listé“¾è¡¨ä¸ªæ•°
 
 	template<bool threads, int inst>
 	class __default_alloc_template {
 
 	private:
-		//·µ»Ø±Èbytes´óÒ»µãµÄ8µÄ±¶Êı(±ØĞëÊÇ8µÄ±¶Êı)
+		//è¿”å›æ¯”byteså¤§ä¸€ç‚¹çš„8çš„å€æ•°(å¿…é¡»æ˜¯8çš„å€æ•°)
 		static size_t ROUND_UP(size_t bytes) {
 
 			return ((bytes)+__ALIGN - 1)&~(__ALIGN - 1);
 		}
 	private:
-		//ÄÚ´æ¹ÜÀíÁ´±í½Úµã
+		//å†…å­˜ç®¡ç†é“¾è¡¨èŠ‚ç‚¹
 		union obj {
 			union obj* free_list_link;
 			char client_data[1];
 		};
 	private:
-		//Ö¸ÕëÊı×é¹ÜÀíÄÚ´æ
+		//æŒ‡é’ˆæ•°ç»„ç®¡ç†å†…å­˜
 		static obj* volatile free_list[__NFREELISTS];
 
-		//¸ù¾İÊ¹ÓÃÇø¿é´óĞ¡,¾ö¶¨Ê¹ÓÃ¼¸ºÅfree_list,n´Ó1¿ªÊ¼
+		//æ ¹æ®ä½¿ç”¨åŒºå—å¤§å°,å†³å®šä½¿ç”¨å‡ å·free_list,nä»1å¼€å§‹
 		static size_t FREELISt_INDEX(size_t bytes) {
 			return (((bytes)+__ALIGN - 1) / __ALIGN - 1);
 		}
 
-		//·µ»ØÒ»¸ö´óĞ¡ÎªnµÄ¶ÔÏó,²¢¿ÉÄÜ¼ÓÈë´óĞ¡ÎªnµÄÆäËûÇø¿éµ½free_list
+		//è¿”å›ä¸€ä¸ªå¤§å°ä¸ºnçš„å¯¹è±¡,å¹¶å¯èƒ½åŠ å…¥å¤§å°ä¸ºnçš„å…¶ä»–åŒºå—åˆ°free_list
 		static void *refill(size_t n);
 
-		//ÅäÖÃÒ»´ó¿é¿Õ¼ä,¿ÉÈİÄÉnobjs¸ö´óĞ¡ÎªsizeµÄÇø¿é
-		//Èç¹ûÅäÖÃnobjs¸öÇø¿éÓĞËù²»±ã,nobjs»á½µµÍ
+		//é…ç½®ä¸€å¤§å—ç©ºé—´,å¯å®¹çº³nobjsä¸ªå¤§å°ä¸ºsizeçš„åŒºå—
+		//å¦‚æœé…ç½®nobjsä¸ªåŒºå—æœ‰æ‰€ä¸ä¾¿,nobjsä¼šé™ä½
 		static char *chunk_alloc(size_t size, int &nobjs);
 
-		//ÄÚ´æ³Ø
-		static char *start_free;//ÄÚ´æ³ØÆğÊ¼Î»ÖÃ
-		static char *end_free;//ÄÚ´æ³Ø½áÊøÎ»ÖÃ
+		//å†…å­˜æ± 
+		static char *start_free;//å†…å­˜æ± èµ·å§‹ä½ç½®
+		static char *end_free;//å†…å­˜æ± ç»“æŸä½ç½®
 		static size_t heap_size;
 	public:
 		static void *allocate(size_t n);
@@ -153,8 +153,8 @@ namespace Zyw
 		my_free_list = free_list + FREELISt_INDEX(n);
 		result = *my_free_list;
 		if (result == 0) {
-			//Ã»ÕÒµ½¿ÉÓÃµÄfree_list;
-			void*r = refill(ROUND_UP(n));//ÖØĞÂÌî³ä
+			//æ²¡æ‰¾åˆ°å¯ç”¨çš„free_list;
+			void*r = refill(ROUND_UP(n));//é‡æ–°å¡«å……
 			return r;
 		}
 		*my_free_list = result->free_list_link;
@@ -215,13 +215,13 @@ namespace Zyw
 	{
 
 		char* result = nullptr;
-		size_t total_bytes = size*nobjs;//Ò»´ÎÅäÖÃn¸önobjs
-		size_t byte_left = end_free - start_free;//ÄÚ´æ³ØÊ£Óà¿Õ¼ä
-		if (byte_left >= total_bytes) {   //ÄÚ´æ×ã¹»
+		size_t total_bytes = size*nobjs;//ä¸€æ¬¡é…ç½®nä¸ªnobjs
+		size_t byte_left = end_free - start_free;//å†…å­˜æ± å‰©ä½™ç©ºé—´
+		if (byte_left >= total_bytes) {   //å†…å­˜è¶³å¤Ÿ
 			result = start_free;
 			start_free += total_bytes;
 			return result;
-		}//ÄÚ´æ³ØÊ£Óà¿Õ¼ä²»ÄÜÍêÈ«Âú×ãĞèÇóÁ¿,µ«¿ÉÒÔÌá¹©Ò»¸öÒÔÉÏ
+		}//å†…å­˜æ± å‰©ä½™ç©ºé—´ä¸èƒ½å®Œå…¨æ»¡è¶³éœ€æ±‚é‡,ä½†å¯ä»¥æä¾›ä¸€ä¸ªä»¥ä¸Š
 		else if (byte_left >= size) {
 			nobjs = byte_left / size;
 			total_bytes = size*nobjs;
@@ -229,17 +229,17 @@ namespace Zyw
 			start_free += total_bytes;
 			return result;
 		}
-		else  //Ò»¸ö¶¼ÎŞ·¨Âú×ã
+		else  //ä¸€ä¸ªéƒ½æ— æ³•æ»¡è¶³
 		{
 			size_t bytes_to_get = 2 * total_bytes + ROUND_UP(heap_size);
-			//ÈÃÄÚ´æ³ØÖĞµÄ²ĞÓàÁãÍ·»¹ÓĞÀûÓÃ¼ÛÖµ
+			//è®©å†…å­˜æ± ä¸­çš„æ®‹ä½™é›¶å¤´è¿˜æœ‰åˆ©ç”¨ä»·å€¼
 			if (byte_left > 0)
 			{
 				obj*volatile*my_free_list = free_list + FREELISt_INDEX(byte_left);
 				((obj*)start_free)->free_list_link = *my_free_list;
 				*my_free_list = (obj*)start_free;
 			}
-			//ÅäÖÃheap¿Õ¼ä,ÓÃÀ´²¹³äÄÚ´æ³Ø
+			//é…ç½®heapç©ºé—´,ç”¨æ¥è¡¥å……å†…å­˜æ± 
 			start_free = (char*)malloc(bytes_to_get);
 			if (0 == start_free) {
 				int i;
@@ -254,22 +254,22 @@ namespace Zyw
 						return (chunk_alloc(size, nobjs));
 					}
 				}
-				end_free = 0;//Èç¹û³öÏÖÒâÍâ
-				//ÕâÀï½«µ¼ÖÂÅ×³öÒì³£,ÒòÎªÉÏÃæµ÷ÓÃmallocÊ§°Ü,ÏÂÃæÒ»¶¨Ê§°Ü
+				end_free = 0;//å¦‚æœå‡ºç°æ„å¤–
+				//è¿™é‡Œå°†å¯¼è‡´æŠ›å‡ºå¼‚å¸¸,å› ä¸ºä¸Šé¢è°ƒç”¨mallocå¤±è´¥,ä¸‹é¢ä¸€å®šå¤±è´¥
 				start_free = (char*)malloc_alloc::allocate(bytes_to_get);
 
 
 			}
 			heap_size += bytes_to_get;
 			end_free = start_free + bytes_to_get;
-			//µİ¹é×Ô¼ºµ÷ÓÃ×Ô¼º,ÎªÁËĞŞÕınobjs
+			//é€’å½’è‡ªå·±è°ƒç”¨è‡ªå·±,ä¸ºäº†ä¿®æ­£nobjs
 			return chunk_alloc(size, nobjs);
 		}
 
 	}
 
 	
-	//sim_alloc¼ò»¯ÅäÖÃÆ÷
+	//sim_allocç®€åŒ–é…ç½®å™¨
 
 	template<class T, class Alloc>
 	class sim_alloc {
@@ -291,8 +291,7 @@ namespace Zyw
 
 
 	};
-	using alloc = __default_alloc_template<0, 0>; //Ä¬ÈÏÊ¹ÓÃ¶ş¼¶ÅäÖÃÆ÷
-
+	using alloc = __default_alloc_template<0, 0>; //é»˜è®¤ä½¿ç”¨äºŒçº§é…ç½®å™¨
 }
 		
 
