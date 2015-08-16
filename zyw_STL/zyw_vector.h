@@ -89,7 +89,7 @@ namespace Zyw
 		void resize(size_type new_size) { resize(new_size, T()); }
 		void clear() { erase(begin(), end()); }
 	protected:
-		                          //9              //6
+		                      
 		iterator allocate_and_fill(size_type n, const T&x) {
 			iterator result = data_allocator::allocate(n);
 			return Zyw:: uninitialized_fill_n(result, n, x);
