@@ -11,21 +11,21 @@ namespace Zyw
 
 
 	template<class InputIterator, class ForwardIterator>
-	//½«[first,last]·¶Î§ÄÚµÄÃ¿Ò»¸ö¶ÔÏó¸´ÖÆµ½resultÖĞ
+	//å°†[first,last]èŒƒå›´å†…çš„æ¯ä¸€ä¸ªå¯¹è±¡å¤åˆ¶åˆ°resultä¸­
 	ForwardIterator
 		uninitialized_copy(InputIterator first, InputIterator last, ForwardIterator result)
-	{           //×îºóÒ»¸ö²ÎÊıÊÇÎªÁËÈ¡³öµü´úÆ÷¶ÔÓ¦µÄÀàĞÍ,ÒÔÅĞ¶ÏÊÇ·ñÊÇÄÚÖÃÀàĞÍ»¹ÊÇÓÃ»§×Ô¶¨ÒåÀàĞÍ
+	{           //æœ€åä¸€ä¸ªå‚æ•°æ˜¯ä¸ºäº†å–å‡ºè¿­ä»£å™¨å¯¹åº”çš„ç±»å‹,ä»¥åˆ¤æ–­æ˜¯å¦æ˜¯å†…ç½®ç±»å‹è¿˜æ˜¯ç”¨æˆ·è‡ªå®šä¹‰ç±»å‹
 		return  __uninitialized_copy(first, last, result, (result));
 	}
 
 	template<class InputIterator, class ForwardIterator, class T>
 	inline ForwardIterator
 		__uninitialized_copy(InputIterator first, InputIterator last, ForwardIterator result, T*) {
-		typedef typename __type_traits<T>::is_POD_type is_POD;   //POD±íÊ¾C++ÄÚÖÃÀàĞÍ
+		typedef typename __type_traits<T>::is_POD_type is_POD;   //PODè¡¨ç¤ºC++å†…ç½®ç±»å‹
 		return __uninitialized_copy_aux(first, last, result, is_POD());
 
 	}
-	//Èç¹ûÀàĞÍÊÇis_podÀàĞÍ(ÄÚÖÃÀàĞÍ)ÄÇÃ´Ö±½Óµ÷ÓÃcopyº¯Êı
+	//å¦‚æœç±»å‹æ˜¯is_podç±»å‹(å†…ç½®ç±»å‹)é‚£ä¹ˆç›´æ¥è°ƒç”¨copyå‡½æ•°
 	template<class InputIterator, class ForwardIterator>
 	inline ForwardIterator
 		__uninitialized_copy_aux(InputIterator first, InputIterator last
@@ -34,7 +34,7 @@ namespace Zyw
 
 
 	}
-	//Èç¹ûÊÇÀàÀàĞÍ»òÕßÆäËûÓÃ»§×Ô¶¨ÒåÀàĞÍ,È»ºóÒ»¸öÒ»¸ö¿½±´¹¹Ôì
+	//å¦‚æœæ˜¯ç±»ç±»å‹æˆ–è€…å…¶ä»–ç”¨æˆ·è‡ªå®šä¹‰ç±»å‹,ç„¶åä¸€ä¸ªä¸€ä¸ªæ‹·è´æ„é€ 
 	template<class InputIterator, class ForwardIterator>
 	inline ForwardIterator
 		__uninitialized_copy_aux(InputIterator first, InputIterator last
@@ -47,18 +47,18 @@ namespace Zyw
 	}
 
 
-	//ÌØ»¯°æ±¾
+	//ç‰¹åŒ–ç‰ˆæœ¬
 	inline char*uninitialized_copy(const char*first, const char*last, char*result)
 	{
 		memmove(result, first, last - first);
 	}
 
 
-	//½«[first,first+n]Ö®¼äÎ´³õÊ¼»¯Çø¼ä
+	//å°†[first,first+n]ä¹‹é—´æœªåˆå§‹åŒ–åŒºé—´
 	template<class ForwardIterator, class Size, class T>
 	ForwardIterator
 		uninitialized_fill_n(ForwardIterator first, Size n, const T& x)
-	{    //ÓÃÀ´ÅĞ¶ÏÊÇ·ñÊÇpod,podÀàĞÍ±íÊ¾µÄÊÇÏµÍ³¶¨ÒåµÄ,¶ø·Ç×Ô¼º¶¨ÒåµÄÀàĞÍ
+	{    //ç”¨æ¥åˆ¤æ–­æ˜¯å¦æ˜¯pod,podç±»å‹è¡¨ç¤ºçš„æ˜¯ç³»ç»Ÿå®šä¹‰çš„,è€Œéè‡ªå·±å®šä¹‰çš„ç±»å‹
 		return __uninitialized_fill_n(first, n, x, first);
 
 	}
@@ -87,8 +87,8 @@ namespace Zyw
 
 
 
-	//firstºÍlastµü´úÆ÷Ö®¼äÔÚµ÷ÓÃ´Ëº¯ÊıÖ®Ç°¶¼ÊÇÎ´³õÊ¼»¯µÄ
-	//´Ëº¯ÊıµÄÄ¿µÄ°Ñfirstµ½lastÖ®¼äµÄµü´úÆ÷ËùÖ¸µÄµÄµØ·½³õÊ¼»¯²¢¸³ÖµÎªx
+	//firstå’Œlastè¿­ä»£å™¨ä¹‹é—´åœ¨è°ƒç”¨æ­¤å‡½æ•°ä¹‹å‰éƒ½æ˜¯æœªåˆå§‹åŒ–çš„
+	//æ­¤å‡½æ•°çš„ç›®çš„æŠŠfirståˆ°lastä¹‹é—´çš„è¿­ä»£å™¨æ‰€æŒ‡çš„çš„åœ°æ–¹åˆå§‹åŒ–å¹¶èµ‹å€¼ä¸ºx
 	template<class ForwardIterator, class T>
 	void uninitialized_fill(ForwardIterator first, ForwardIterator last, const T&x)
 	{
@@ -121,7 +121,5 @@ namespace Zyw
 
 		fill(first, last, x);
 	}
-
-
 
 }
